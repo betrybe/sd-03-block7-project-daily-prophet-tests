@@ -142,7 +142,7 @@ describe('Daily Prophet', () => {
       .should('have.css', 'animation-play-state', 'paused')
   });
 
-  it.only('Você deve utilizar `steps` para que as transições entre as etapas da sua animação sejam discretas', () => {
+  it('Você deve utilizar `steps` para que as transições entre as etapas da sua animação sejam discretas', () => {
     cy.readFile('./style.css').then((content) => {
       expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(steps()).+}/);
     });

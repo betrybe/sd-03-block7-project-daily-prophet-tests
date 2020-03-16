@@ -73,7 +73,7 @@ describe('Daily Prophet', () => {
 
   it('Você deve criar dois layouts: um para telas que tenham até `760px` de largura, e outro para telas que tenham no mínimo `1170px` de largura', () => {
     const className = 'container-layout';
-    const property = 'background-color';
+    const backgroundColorProperty = 'background-color';
     const yellow = 'rgb(255, 255, 0)'
     const red = 'rgb(255, 0, 0)';
     const lowViewport = [500, 768];
@@ -81,10 +81,10 @@ describe('Daily Prophet', () => {
     const maxViewport = [1170, 768];
     const defaultViewport = [1366, 768];
 
-    checkCssPropertyInLayout(className, ...lowViewport, property, yellow);
-    checkCssPropertyInLayout(className, ...minViewport, property, yellow);
-    checkCssPropertyInLayout(className, ...maxViewport, property, red);
-    checkCssPropertyInLayout(className, ...defaultViewport, property, red);
+    checkCssPropertyInLayout(className, ...lowViewport, backgroundColorProperty, yellow);
+    checkCssPropertyInLayout(className, ...minViewport, backgroundColorProperty, yellow);
+    checkCssPropertyInLayout(className, ...maxViewport, backgroundColorProperty, red);
+    checkCssPropertyInLayout(className, ...defaultViewport, backgroundColorProperty, red);
   });
 
   it('Você deve implementar uma regra de estilo específica para quando a orientação da tela estiver em `landscape`', () => {

@@ -1,7 +1,7 @@
 {
-  "Sua página deve usar os elementos semânticos do _HTML_ de forma correta": 92,
+  "Sua página deve usar os elementos semânticos do _HTML_ de forma correta. Sua página deve conter os elementos: `header`, `nav`, `aside`, `article`, `section`, `footer`, `img`, `a`": 92,
   "Sua página deve passar no validador de acessibilidade AChecker": 93,
-  "Você deve criar dois layouts": 94,
+  "Você deve criar dois layouts: um para telas que tenham até `760px` de largura, e outro para telas que tenham no mínimo `1170px` de largura": 94,
   "Você deve implementar uma regra de estilo específica para quando a orientação da tela estiver em `landscape`": 95,
   "Faça a animação de alguma coisa voando pela tela": 96,
   "Você deve utilizar a transformação `skew`": 97,

@@ -1,3 +1,7 @@
+const removeLineBreaks = (content) => {
+  return content.replace(/(\r\n|\n|\r)/gm, '');
+};
+
 const checkCssPropertyInLayout = (className, viewportWidth, viewportHeight, property, value) => {
   cy.viewport(viewportWidth, viewportHeight);
   cy.visit('./index.html');
@@ -11,7 +15,7 @@ const checkCssPropertyInLayout = (className, viewportWidth, viewportHeight, prop
   });
 };
 
-const checkCssPropertyInOrientation = (className, preset, orientation, property, value) => {
+const checkCssExistPropertyInOrientation = (className, preset, orientation, property, value) => {
   cy.viewport(preset, orientation);
   cy.visit('./index.html');
   cy.document().then((doc) => {
@@ -24,9 +28,22 @@ const checkCssPropertyInOrientation = (className, preset, orientation, property,
   });
 };
 
+const checkCssNotExistPropertyInOrientation = (className, preset, orientation, property, value) => {
+  cy.viewport(preset, orientation);
+  cy.visit('./index.html');
+  cy.document().then((doc) => {
+    const e = doc.createElement('div');
+    e.className = className;
+    doc.body.appendChild(e);
+    cy.get(`div.${className}`)
+      .should('exist')
+      .should('not.have.css', property, value);
+  });
+};
+
 describe('Daily Prophet', () => {
 
-  it('Sua página deve usar os elementos semânticos do _HTML_ de forma correta', () => {
+  it('Sua página deve usar os elementos semânticos do _HTML_ de forma correta. Sua página deve conter os elementos: `header`, `nav`, `aside`, `article`, `section`, `footer`, `img`, `a`', () => {
     cy.visit('./index.html');
     const elements = [
       'header',
@@ -54,7 +71,7 @@ describe('Daily Prophet', () => {
     });
   });
 
-  it('Você deve criar dois layouts', () => {
+  it('Você deve criar dois layouts: um para telas que tenham até `760px` de largura, e outro para telas que tenham no mínimo `1170px` de largura', () => {
     const className = 'container-layout';
     const property = 'background-color';
     const yellow = 'rgb(255, 255, 0)'
@@ -73,11 +90,13 @@ describe('Daily Prophet', () => {
   it('Você deve implementar uma regra de estilo específica para quando a orientação da tela estiver em `landscape`', () => {
     const className = 'container-orientation';
     const preset = 'iphone-6';
-    const orientation = 'landscape';
+    const landscape = 'landscape';
+    const portrait = 'portrait';
     const property = 'border';
     const value = '1px solid rgb(255, 0, 0)';
 
-    checkCssPropertyInOrientation(className, preset, orientation, property, value);
+    checkCssExistPropertyInOrientation(className, preset, landscape, property, value);
+    checkCssNotExistPropertyInOrientation(className, preset, portrait, property, value);
   });
 
   it('Faça a animação de alguma coisa voando pela tela', () => {
@@ -93,25 +112,25 @@ describe('Daily Prophet', () => {
 
   it('Você deve utilizar a transformação `skew`', () => {
     cy.readFile('./style.css').then((content) => {
-      expect(content).to.match(/skew/);
+      expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(skew).+}/);
     });
   });
 
   it('Você deve utilizar a transformação `scale`', () => {
     cy.readFile('./style.css').then((content) => {
-      expect(content).to.match(/scale/);
+      expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(scale).+}/);
     });
   });
 
   it('Você deve utilizar a transformação `translate`', () => {
     cy.readFile('./style.css').then((content) => {
-      expect(content).to.match(/translate/);
+      expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(translate).+}/);
     });
   });
 
   it('Você deve utilizar `transitions` para suavizar alterações de estilo entre seus elementos', () => {
     cy.readFile('./style.css').then((content) => {
-      expect(content).to.match(/transition/);
+      expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(transition).+}/);
     });
   });
 
@@ -123,9 +142,9 @@ describe('Daily Prophet', () => {
       .should('have.css', 'animation-play-state', 'paused')
   });
 
-  it('Você deve utilizar `steps` para que as transições entre as etapas da sua animação sejam discretas', () => {
+  it.only('Você deve utilizar `steps` para que as transições entre as etapas da sua animação sejam discretas', () => {
     cy.readFile('./style.css').then((content) => {
-      expect(content).to.match(/(to\s{)|(from\s{)|(\d+%\s{)/);
+      expect(removeLineBreaks(content)).to.match(/@keyframes\s.+\s{.+(steps()).+}/);
     });
   });
 });
